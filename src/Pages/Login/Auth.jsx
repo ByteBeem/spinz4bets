@@ -152,7 +152,7 @@ const Login = ({ isOpen, onClose }) => {
   const handleSubmitSignUp = async (e) => {
     setErrorSignUpMessage("");
     e.preventDefault();
-    const { full, surname, country, email, password  , confirmPassword , ID , terms} = signUpFormData;
+    const { full, surname, country, email, password  , confirmPassword ,  terms} = signUpFormData;
 
     if (!validateEmail(email)) {
       setErrors((prevErrors) => ({
@@ -226,7 +226,7 @@ const Login = ({ isOpen, onClose }) => {
         setErrorMessage("");
         setIsResetLoading(false);
         localStorage.setItem("token" , response.data.token);
-        window.location.href = "http://localhost:3000";
+        window.location.href = "https://spinz4bets.co.za";
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -289,7 +289,7 @@ const Login = ({ isOpen, onClose }) => {
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
-        window.location.href = "http://localhost:3000";
+        window.location.href = "https://spinz4bets.co.za";
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {

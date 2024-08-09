@@ -70,7 +70,7 @@ const ErrorModal = ({ isOpen, onClose }) => {
   
       if (response.status === 200) {
         setMessage("Password updated successfully , Go log in.");
-        window.location.href = "http://localhost:3000";
+        window.location.href = "https://spinz4bets.co.za";
       } else {
         setError("Failed to update password. Please try again later.");
       }
