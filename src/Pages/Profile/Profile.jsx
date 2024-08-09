@@ -44,7 +44,7 @@ function Profile({ showSidebar, active, closeSidebar }) {
   const DeleteAccount = async () =>{
     try{
       setLoading(true);
-      const response =  await axios.delete("https://profitpilot.ddns.net/users/delete-user" , {
+      const response =  await axios.post("https://profitpilot.ddns.net/users/delete-user" , {
         token
 
       })
