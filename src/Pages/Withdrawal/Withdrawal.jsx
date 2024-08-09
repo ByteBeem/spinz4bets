@@ -35,6 +35,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
       })
       .then((response) => {
         setCsrfToken(response.data.csrfToken);
+        alert(csrfToken);
       })
       .catch(() => {
         setError("Something went wrong , Try refreshing.");
@@ -103,6 +104,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
         headers: {
           Authorization: `Bearer ${token}`,
           "X-CSRF-Token": csrfToken,
+          
         },
       })
       .then((response) => {
