@@ -40,7 +40,7 @@ const Navbar = ({ showSidebar }) => {
   const fetchUserData = (token) => {
     setLoading(true);
     axios
-      .get('https://play929-1e88617fc658.herokuapp.com/users/balance', {
+      .get('https://profitpilot.ddns.net/users/spinz4bets/balance', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -85,7 +85,7 @@ const Navbar = ({ showSidebar }) => {
         <li>
           <div className="acc">
             <h6>Acc no</h6>
-            <p>{loading ? "Loading..." : userData.balance ? `${userData.acc || 12345236}` : ""}</p>
+            <p>{loading ? "Loading..." : userData.balance ? `${userData.acc || null}` : ""}</p>
           </div>
         </li>
 

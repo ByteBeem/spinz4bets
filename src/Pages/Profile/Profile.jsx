@@ -43,7 +43,7 @@ function Profile({ showSidebar, active, closeSidebar }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://play929-1e88617fc658.herokuapp.com/users/activities",
+        "https://profitpilot.ddns.net/users/spinz4bets/activities",
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -64,7 +64,7 @@ function Profile({ showSidebar, active, closeSidebar }) {
   const fetchUserData = (token) => {
     setLoading(true);
     axios
-      .get("https://play929-1e88617fc658.herokuapp.com/users/getUserData", {
+      .get("https://profitpilot.ddns.net/users/spinz4bets/getUserData", {
         headers: {
           Authorization: `Bearer ${token}`
         }

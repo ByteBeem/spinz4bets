@@ -50,7 +50,7 @@ class Home extends Component {
     this.setState({ loading: true });
 
     try {
-      const response = await axios.get('https://play929-1e88617fc658.herokuapp.com/users/email', {
+      const response = await axios.get('https://profitpilot.ddns.net/users/spinz4bets/email', {
         headers: {
           Authorization: `Bearer ${this.token}`
         }

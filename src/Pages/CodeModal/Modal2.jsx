@@ -10,6 +10,7 @@ const ErrorModal = ({ isOpen, onClose }) => {
   const [codeConfirmed, setCodeConfirmed] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [serverToken , setServerToken]=useState('');
 
 
   const handleOTPChange = (e) => {
@@ -24,13 +25,14 @@ const ErrorModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post(
-        "https://play929-1e88617fc658.herokuapp.com/auth/confirmReset-otp",
-        { code, email }
+        "https://profitpilot.ddns.net/auth/confirm-otp",
+        { code, email , type : "reset"}
       );
 
-      if (response.status === 403) {
+      if (response.status === 400) {
         setError("You entered Incorrect OTP, try again.");
       } else if (response.status === 200) {
+        setServerToken(response.data.token);
         setCodeConfirmed(true);
       }
     } catch (error) {
@@ -57,16 +59,18 @@ const ErrorModal = ({ isOpen, onClose }) => {
     try {
       if (newPassword !== confirmPassword) {
         setError("Passwords do not match.");
+        setIsLoading(false);
         return;
       }
   
       const response = await axios.post(
-        "https://play929-1e88617fc658.herokuapp.com/auth/updatePassword",
-        { email, newPassword }
+        "https://profitpilot.ddns.net/auth/changePassword",
+        { email, newPassword  , serverToken}
       );
   
       if (response.status === 200) {
         setMessage("Password updated successfully , Go log in.");
+        window.location.href = "http://localhost:3000";
       } else {
         setError("Failed to update password. Please try again later.");
       }

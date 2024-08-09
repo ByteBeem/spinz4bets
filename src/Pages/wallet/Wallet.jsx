@@ -34,7 +34,7 @@ const Wallet = ({ showSidebar, active, closeSidebar }) => {
   const fetchUserData = (token) => {
     setLoading(true);
     axios
-      .get("https://play929-1e88617fc658.herokuapp.com/users/balance", {
+      .get("http://localhost:3001/users/spinz4bets/balance", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

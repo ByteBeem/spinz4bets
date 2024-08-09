@@ -195,13 +195,12 @@ const Login = ({ isOpen, onClose }) => {
     localStorage.setItem("email", email);
 
     try {
-      const response = await axios.post("https://play929.azurewebsites.net/auth/signup", {
+      const response = await axios.post("https://profitpilot.ddns.net/auth/spinz4bets/signup", {
         full,
         surname,
         country,
         email,
         password,
-        ID,
         terms
       });
 
@@ -216,7 +215,6 @@ const Login = ({ isOpen, onClose }) => {
           password: "",
           confirmPassword: "",
           country: "ZA",
-          ID,
           terms:false
         });
         setIsLoading(false);
@@ -227,7 +225,8 @@ const Login = ({ isOpen, onClose }) => {
         setErrorMessage("");
         setErrorMessage("");
         setIsResetLoading(false);
-        setIsModalOpen(true);
+        localStorage.setItem("token" , response.data.token);
+        window.location.href = "http://localhost:3000";
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -279,20 +278,18 @@ const Login = ({ isOpen, onClose }) => {
 
     }
 
-  
-
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://profitpilot.ddns.net/auth/login", {
-        Email,
+      const response = await axios.post("https://profitpilot.ddns.net/auth/spinz4bets/login", {
+        email: Email,
         password,
        
       });
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
-        window.location.href = "https://play929.vercel.app";
+        window.location.href = "http://localhost:3000";
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -355,7 +352,7 @@ const Login = ({ isOpen, onClose }) => {
     setIsResetLoading(true);
 
     try {
-      const response = await axios.post("https://play929-1e88617fc658.herokuapp.com/auth/resetPassword", {
+      const response = await axios.post("https://profitpilot.ddns.net/auth/reset", {
         email,
         
       });
@@ -519,18 +516,7 @@ const Login = ({ isOpen, onClose }) => {
                             </option>
                           ))}
                         </select>
-                        <div className="input-group">
-                        <label htmlFor="email">ID number: </label>
-                        <input
-                          type="numeric"
-                          id="ID"
-                          name="ID"
-                          value={signUpFormData.ID}
-                          onChange={handleChangeSignUp}
-                          required
-                        />
-                        {errors.ID && <p className="error-message">{errors.ID}</p>}
-                      </div>
+                        
 
                         {errors.country && <p className="error-message">{errors.country}</p>}
                       </div>

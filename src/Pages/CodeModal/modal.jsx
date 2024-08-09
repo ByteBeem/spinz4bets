@@ -21,8 +21,8 @@ const ErrorModal = ({ isOpen, onClose }) => {
 
     try {
       const response = await axios.post(
-        "https://play929-1e88617fc658.herokuapp.com/auth/confirm-otp",
-        { code, email }
+        "https://profitpilot.ddns.net/auth/confirm-otp",
+        { code, email , type : "reset"}
       );
 
       if (response.status === 403) {
