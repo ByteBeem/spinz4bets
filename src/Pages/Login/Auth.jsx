@@ -284,7 +284,7 @@ const Login = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://http://profitpilot.ddns.net/auth/login", {
+      const response = await axios.post("https://profitpilot.ddns.net/auth/login", {
         Email,
         password,
        
