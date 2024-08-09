@@ -68,14 +68,32 @@ class Home extends Component {
     }
   };
 
-  handlePlay = (gameName) => {
-    if(gameName === "Chess"){
-      this.setState({isCreateOpen : true});
-    }
+  fetchGameLink = async (name) => {
+    this.setState({ loading: true });
 
-    if(gameName === "Word Search"){
-      this.setState({isWordOpen: true});
+    try {
+      const response = await axios.get('https://profitpilot.ddns.net/users/spinz4bets/play', {
+        
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+          name:name
+        }
+      });
+
+      if (response.status === 200) {
+        const link = response.data.link;
+        window.location.href = `${link}`;
+      }
+    } catch (error) {
+      this.setState({ loading: false });
     }
+  };
+
+  handlePlay = (gameName) => {
+    if(gameName){
+      this.fetchGameLink(gameName);
+    }
+    
   };
 
   getCurrencySymbol = () => {
