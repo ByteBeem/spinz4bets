@@ -55,6 +55,7 @@ class Deposit extends Component {
 
     const requestBody = {
       amount: parseFloat(amount),
+      countryCode : this.countryCode,
     };
 
     axios
