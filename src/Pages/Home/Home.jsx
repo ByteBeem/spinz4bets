@@ -5,6 +5,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Error from "../ErrorModal/ErrorModal";
 import "./Home.scss";
 import cup from "../../assets/cup.jpg";
+import slot from "../../assets/slot.jpg";
 
 
 class Home extends Component {
@@ -17,6 +18,7 @@ class Home extends Component {
       prevGames: [
       
         { name: 'Cup Guess', image: cup, minimum: '2' },
+        { name: 'Slot Machine', image: slot, minimum: '2' },
        
       ],
       loading: false,
@@ -77,7 +79,7 @@ class Home extends Component {
   };
 
   getCurrencySymbol = () => {
-    const symbol = this.country === 'ZA' ? 'R' : '$';
+    const symbol = this.country !== 'ZA' ? '$' : 'R';
     return symbol;
   };
 
@@ -88,6 +90,7 @@ class Home extends Component {
     const statuses = [
      
       { label: "", image: cup },
+      { label: "", image: slot },
       
     ];
 

@@ -56,7 +56,7 @@ const Wallet = ({ showSidebar, active, closeSidebar }) => {
 
   const getCurrencySymbol = () => {
     
-    return country === 'ZA' ? 'R' : '$';
+    return country !== 'ZA' ? '$' : 'R';
   };
 
   return (
