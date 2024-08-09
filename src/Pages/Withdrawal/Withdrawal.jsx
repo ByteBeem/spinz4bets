@@ -28,7 +28,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
 
   useEffect(() => {
     axios
-      .get("https://play929-1e88617fc658.herokuapp.com/auth/csrfToken", {
+      .get("https://profitpilot.ddns.net/subscriptions/csrfToken", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -99,7 +99,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
 
     setLoading(true);
     axios
-      .post("https://play929-1e88617fc658.herokuapp.com/wallet/withdraw", requestBody, {
+      .post("https://profitpilot.ddns.net/subscriptions/withdraw", requestBody, {
         headers: {
           Authorization: `Bearer ${token}`,
           "X-CSRF-Token": csrfToken,
