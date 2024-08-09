@@ -56,11 +56,12 @@ class Deposit extends Component {
     const requestBody = {
       amount: parseFloat(amount),
       countryCode : this.countryCode,
+      token : this.token
     };
 
     axios
       .post(
-        "https://play929-1e88617fc658.herokuapp.com/wallet/deposit",
+        "https://profitpilot.ddns.net/subscriptions/create-payment",
         requestBody,
         {
           headers: {
@@ -142,7 +143,7 @@ class Deposit extends Component {
                         </div>
                         <button
                           className="form_btn"
-                          onClick={() => this.setState({ showPayPalButtons: true })} 
+                          onClick={this.handleDeposit}
                           disabled={this.state.loading}
                         >
                           {this.state.loading ? "Processing..." : "Proceed"}
@@ -150,30 +151,7 @@ class Deposit extends Component {
                       </>
                     )}
 
-                    {showPayPalButtons && (
-                      <PayPalScriptProvider options={{ "client-id": "Aed5UEDwLFdwNKeX05avjbYGjEqvPqpOVfLPgvmk_4jM7rVkgtubq2IatkHNaM4aLVLYAuykpr9xQlg6" }}>
-                        <div className="paypal_buttons">
-                          <h1>Deposit with PayPal</h1>
-                          <PayPalButtons
-                            style={{ layout: 'vertical' }}
-                            createOrder={(data, actions) => {
-                              return actions.order.create({
-                                purchase_units: [{
-                                  amount: {
-                                    value: amount,
-                                  },
-                                }],
-                              });
-                            }}
-                            onApprove={(data, actions) => {
-                              return actions.order.capture().then(details => {
-                                alert('Transaction completed by ' + details.payer.name.given_name);
-                              });
-                            }}
-                          />
-                        </div>
-                      </PayPalScriptProvider>
-                    )}
+                    
                   </>
                 )}
               </div>
