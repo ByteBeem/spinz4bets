@@ -1,0 +1,48 @@
+.game-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .cups-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .cup {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    margin: 0 10px;
+    position: relative;
+    border-radius: 50% 50% 0 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .cup.selected {
+    transform: translateY(-20px);
+  }
+  
+  .ball {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
