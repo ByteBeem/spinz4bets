@@ -178,11 +178,11 @@ class Deposit extends Component {
               </div>
 
               <div className="footer">
-                <p>Deposits are processed securely and swiftly using trusted payment gateways like PayFast , Paypal and Yoco.</p>
+                <p>Deposits are processed securely and swiftly using trusted payment gateways like Ikhokha , Paypal and Yoco.</p>
                 <p>We do not store any of your banking information. Your financial details are handled directly by our secure payment partners.</p>
                 <p>Your privacy and security are our top priorities. We adhere to strict data protection regulations and industry-standard security measures to safeguard your information.</p>
-                <p>For any inquiries or assistance, please contact our customer support team at <span className="contact-email">support@play929.com</span>.</p>
-                <p>© 2024 Play929. All rights reserved.</p>
+                <p>For any inquiries or assistance, please contact our customer support team at <span className="contact-email">support@Spinz4bets.co.za</span>.</p>
+                <p>© 2024 Spinz4bets. All rights reserved.</p>
               </div>
             </div>
           </div>

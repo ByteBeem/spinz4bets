@@ -34,7 +34,7 @@ const Wallet = ({ showSidebar, active, closeSidebar }) => {
   const fetchUserData = (token) => {
     setLoading(true);
     axios
-      .get("http://localhost:3001/users/spinz4bets/balance", {
+      .get("https://profitpilot.ddns.net/users/spinz4bets/balance", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -85,7 +85,7 @@ const Wallet = ({ showSidebar, active, closeSidebar }) => {
         </div>
         <div className="footer">
           <p>
-            Withdrawals: We take 10% of the requested withdrawal amount. Deposits are processed instantly and securely.
+            Deposits are processed instantly and securely.
             Withdrawals may take up to 24 hours to reflect.
           </p>
           <p>
@@ -96,9 +96,9 @@ const Wallet = ({ showSidebar, active, closeSidebar }) => {
 
 Your privacy and security are our top priorities. We adhere to strict data protection regulations and industry-standard security measures to safeguard your information.
 
-For any inquiries or assistance, please contact our customer support team at support@play929.com.
+For any inquiries or assistance, please contact our customer support team at support@Spinz4bets.co.za.
 
-© 2024 Play929. All rights reserved.
+© 2024 Spinz4bets. All rights reserved.
           </p>
         </div>
         {loginModalOpen && <Auth isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />}

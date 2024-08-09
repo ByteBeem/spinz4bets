@@ -19,6 +19,7 @@ function Profile({ showSidebar, active, closeSidebar }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ userData, setUserData]=useState("");
+  const [token , setToken] = useState('');
 
   const name = userData.name;
   const surname = userData.surname;
@@ -30,6 +31,7 @@ function Profile({ showSidebar, active, closeSidebar }) {
 
       fetchUserData(token);
       fetchActivities(token);
+      setToken(token);
     }
     
     else{
@@ -38,6 +40,27 @@ function Profile({ showSidebar, active, closeSidebar }) {
     }
 
   }, []);
+
+  const DeleteAccount = async () =>{
+    try{
+      setLoading(true);
+      const response =  await axios.delete("https://profitpilot.ddns.net/users/delete-user" , {
+        token
+
+      })
+
+      if(response.status === 200){
+        localStorage.clear();
+        window.location.href = "";
+      };
+
+    }catch(err){
+
+    }finally{
+      setLoading(false);
+
+    }
+  }
 
   const fetchActivities = async (token) => {
     try {
@@ -119,7 +142,10 @@ function Profile({ showSidebar, active, closeSidebar }) {
           Change Password
         </Link>
 
-        <Link className="form_btn_delete" to="/reset">
+        <Link className="form_btn_delete" onClick={() => {
+              
+              DeleteAccount();
+            }}>
           Delete account
         </Link>
         <div className="activity_table">
