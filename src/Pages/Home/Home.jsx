@@ -16,7 +16,7 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
     { name: "Slot Machine", image: slot, minimum: "2" },
   ]);
   const [loading, setLoading] = useState(false);
-  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "");
+ 
   const [maxContainerHeight, setMaxContainerHeight] = useState(window.innerHeight - 100);
   const token = localStorage.getItem("token");
   const country = localStorage.getItem("country");
@@ -28,33 +28,13 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
   useEffect(() => {
     window.addEventListener("resize", handleResize);
 
-    if (token && !userEmail) {
-      fetchUserEmail();
-    }
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [token, userEmail, handleResize]);
+  }, [token, handleResize]);
 
-  const fetchUserEmail = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("https://profitpilot.ddns.net/users/spinz4bets/email", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.status === 200) {
-        const email = response.data.userEmail;
-        localStorage.setItem("userEmail", email);
-        setUserEmail(email);
-      }
-    } catch (error) {
-      setErrorMessage("Failed to fetch user email.");
-      setErrorModalOpen(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
 
   const fetchGameLink = useCallback(
     async (name) => {

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 2rem;
   background-color: #f9f9f9;
   min-height: 100vh;
@@ -13,7 +14,7 @@
     padding: 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    text-align: center;
+    text-align: center; 
 
     h2 {
       margin-bottom: 1.5rem;
@@ -33,6 +34,7 @@
       font-size: 1rem;
       border-radius: 5px;
       margin-bottom: 2rem;
+      border: none; 
 
       &:hover {
         background-color: #0056b3;
@@ -41,7 +43,7 @@
 
     .referral-link-section {
       margin-top: 2rem;
-      text-align: left;
+      text-align: center; 
 
       p {
         font-size: 1rem;
@@ -50,20 +52,26 @@
 
       .referral-input-group {
         display: flex;
-        align-items: center;
+        flex-direction: column; 
+        align-items: center; 
 
         .referral-input {
+          width: 100%;
+          max-width: 400px; 
           font-size: 1rem;
           padding: 10px;
           border-radius: 5px 0 0 5px;
           border-right: none;
+          border: 1px solid #ddd; 
+          margin-bottom: 1rem; 
         }
 
         .copy-btn {
           background-color: #007bff;
           color: #fff;
-          border-radius: 0 5px 5px 0;
+          border-radius: 5px;
           padding: 10px 20px;
+          border: none; 
 
           &:hover {
             background-color: #0056b3;

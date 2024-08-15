@@ -1,162 +1,164 @@
 header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--white);
-    box-shadow: var(--box-shadow);
-    height: 4rem;
-    position: fixed;
-    top: 0;
-    padding: 0 10% 0 0;
-  
-    .menu_btn {
-      display: none;
-    }
-    .icon {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  box-shadow: var(--box-shadow);
+  height: 4rem;
+  position: fixed;
+  top: 0;
+  padding: 0 10% 0 0;
+
+  .menu_btn {
+    display: none; 
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    margin-right: 8rem; 
+
+    @media screen and (max-width: 900px) {
       font-size: 1.5rem;
-      margin-right: 8rem; 
+      margin-right: 4rem; 
     }
-   
-  
-  
-    .form_btn {
-      background-color: #007bff; 
-      color: #fff; 
-      padding: 10px 20px; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer; 
-      font-size: 16px; 
+
+    @media screen and (max-width: 700px) {
+      font-size: 1.5rem;
+      margin-right: 2rem; 
+      padding: 0; 
     }
-    
-    .form_btn:hover {
+  }
+
+  .form_btn {
+    background-color: #007bff; 
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 16px; 
+
+    &:hover {
       background-color: #0056b3; 
     }
-    
-    .balance {
-      font-size: 25px;
-      font-weight: 100;
-      margin-top: 8px;
-      margin-left: 2rem;
-  
-      @media screen and (max-width: 700px) {
-        font-size: 18px;
-        margin-left: 2rem;
-      }
-      @media screen and (max-width: 900px) {
-        font-size: 18px;
-        margin-left: 2rem;
-      }
-    }
-  
-    .acc {
-      font-size: 25px;
-      font-weight: 100;
-      margin-top: 8px;
-      margin-right: 8rem; 
-    
-      @media screen and (max-width: 700px) {
-        font-size: 18px;
-        padding-right: 25px;
-        margin-left: 4rem;
-      }
-  
-      @media screen and (max-width: 900px) {
-        font-size: 18px;
-        padding-right: 25px;
-        margin-left: 8rem; 
-      }
-    }
-  
-    .acc p {
-      margin: 5px 0;
-      font-size: 16px;
-      color: #555;
-    }
-  
-  
-    
-    .form_btn:hover {
-      background-color: #0056b3;
-    }
-   
-   
-    li {
-      list-style: none;
-    }
-  
-    .games_filter {
-      // margin-left: 5%;
-      display: flex;
-      align-items: center;
-  
-      .deposits-button {
-        padding: 10px;
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 17px;
-        font-weight: 100;
-  
-        &:hover {
-          background-color: var(--primary-dark);
-        }
-      }
-  
-      li {
-        margin-right: 2rem;
-        font-weight: 100;
-        position: relative;
-        cursor: pointer;
-  
-        &::before {
-          content: "";
-          position: absolute;
-          width: 2rem;
-          height: 3px;
-          background: var(--primary-color);
-          bottom: -7px;
-          left: 50%;
-          transform: translateX(-50%);
-          opacity: 0;
-        }
-  
-        &:hover {
-          color: var(--primary-color);
-        }
-      }
-    }
-  
-  
+  }
+
+  .balance {
+    font-size: 25px;
+    font-weight: 100;
+    margin-top: 8px;
+    margin-left: 2rem;
+
     @media screen and (max-width: 700px) {
-      .menu_btn {
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 1rem;
-        transform: translateY(-50%);
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: rgb(82, 81, 81);
-  
-        &:hover {
-          color: black;
-        }
+      font-size: 18px;
+      margin-left: 1rem;
+    }
+
+    @media screen and (max-width: 900px) {
+      font-size: 18px;
+      margin-left: 2rem; 
+    }
+  }
+
+  .acc {
+    font-size: 25px;
+    font-weight: 100;
+    margin-top: 8px;
+    margin-right: 8rem;
+
+    @media screen and (max-width: 700px) {
+      font-size: 18px;
+      margin-right: 2rem; 
+    }
+
+    @media screen and (max-width: 900px) {
+      font-size: 18px;
+      margin-right: 4rem;
+    }
+  }
+
+  .acc p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .games_filter {
+    display: flex;
+    align-items: center;
+
+    .deposits-button {
+      padding: 10px;
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 100;
+
+      &:hover {
+        background-color: var(--primary-dark);
       }
     }
-    
+
+    li {
+      margin-right: 2rem;
+      font-weight: 100;
+      position: relative;
+      cursor: pointer;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 2rem;
+        height: 3px;
+        background: var(--primary-color);
+        bottom: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+      }
+
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .menu_btn {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: rgb(82, 81, 81);
+
+      &:hover {
+        color: black;
+      }
+    }
+
     .games_filter {
-      margin-left: 5rem;
-  
+      margin-left: 1rem; 
+
       li {
         margin-right: 1rem;
       }
     }
-  
-    .right {
-      margin-right: 10%;
+  }
+
+  @media screen and (max-width: 900px) {
+    .games_filter {
+      margin-left: 2rem; 
     }
   }
+
+  .right {
+    margin-right: 10%;
+  }
+}
