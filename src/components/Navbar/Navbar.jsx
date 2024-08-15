@@ -67,14 +67,6 @@ const Navbar = ({ showSidebar }) => {
             )}
           </div>
         </li>
-
-        <li>
-          <div className="acc">
-            <h6>Acc no</h6>
-            <p>{loading ? "Loading..." : userData.balance ? `${userData.acc || null}` : ""}</p>
-          </div>
-        </li>
-
        
         <li>
           <FaCircleInfo 
