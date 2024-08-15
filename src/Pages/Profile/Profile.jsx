@@ -9,7 +9,7 @@ import Error from "../ErrorModal/ErrorModal";
 import Auth from "../../Pages/Login/Auth";
 import { Link } from "react-router-dom";
 import { FiLoader } from "react-icons/fi";
-import Refer from "../../Pages/Referral/refer";
+
 
 
 function Profile({ showSidebar, active, closeSidebar }) {
@@ -18,12 +18,12 @@ function Profile({ showSidebar, active, closeSidebar }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [ userData, setUserData]=useState("");
-  const [token , setToken] = useState('');
+  const [userData, setUserData] = useState("");
+  const [token, setToken] = useState('');
 
   const name = userData.name;
   const surname = userData.surname;
-  
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -33,34 +33,15 @@ function Profile({ showSidebar, active, closeSidebar }) {
       fetchActivities(token);
       setToken(token);
     }
-    
-    else{
+
+    else {
       setLoginModalOpen(true);
-      
+
     }
 
   }, []);
 
-  const DeleteAccount = async () =>{
-    try{
-      setLoading(true);
-      const response =  await axios.post("https://profitpilot.ddns.net/users/delete-user" , {
-        token
 
-      })
-
-      if(response.status === 200){
-        localStorage.clear();
-        window.location.href = "";
-      };
-
-    }catch(err){
-
-    }finally{
-      setLoading(false);
-
-    }
-  }
 
   const fetchActivities = async (token) => {
     try {
@@ -73,12 +54,12 @@ function Profile({ showSidebar, active, closeSidebar }) {
           }
         }
       );
-      
-      
+
+
       setActivities(response.data);
     } catch (error) {
 
-    
+
     } finally {
       setLoading(false);
     }
@@ -95,12 +76,13 @@ function Profile({ showSidebar, active, closeSidebar }) {
       .then((response) => {
 
         setUserData(response.data);
+      
 
 
       })
       .catch((error) => {
 
-        
+
       })
       .finally(() => {
         setLoading(false);
@@ -133,7 +115,11 @@ function Profile({ showSidebar, active, closeSidebar }) {
               <span>Surname:</span>
               <div className="text_item">{surname}</div>
 
-              <Refer />
+              <Link className="form_btn" to="/Refer">
+                Referral
+              </Link>
+
+            
             </div>
           </div>
         </div>
@@ -142,12 +128,7 @@ function Profile({ showSidebar, active, closeSidebar }) {
           Change Password
         </Link>
 
-        <Link className="form_btn_delete" onClick={() => {
-              
-              DeleteAccount();
-            }}>
-          Delete account
-        </Link>
+
         <div className="activity_table">
           <table>
             <thead>

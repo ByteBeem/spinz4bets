@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Withdraw.scss";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -17,180 +17,132 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [amountError, setAmountError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [bankError, setBankError] = useState("");
+  const [formErrors, setFormErrors] = useState({});
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [isButtonPaypalDisabled, setIsButtonPaypalDisabled] = useState(true);
-  const [isSuccessModalOpen , setIsSuccessModalOpen]=useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const token = localStorage.getItem("token");
   const countryCode = localStorage.getItem("country");
 
+  const validateForm = useCallback(() => {
+    const errors = {};
+
+    if (!formData.amount || isNaN(formData.amount) || formData.amount <= 0) {
+      errors.amount = "Invalid withdrawal amount";
+    }
+
+    if (countryCode === "ZA") {
+      if (!formData.account) errors.account = "Account number is required";
+      if (!formData.bank) errors.bank = "Bank is required";
+    } else {
+      if (!formData.email) errors.email = "PayPal email is required";
+    }
+
+    if (!formData.password) {
+      errors.password = "Password is required";
+    }
+
+    setFormErrors(errors);
+    setIsButtonDisabled(Object.keys(errors).length > 0);
+  }, [formData, countryCode]);
+
   useEffect(() => {
-    axios
-      .get("https://profitpilot.ddns.net/subscriptions/csrfToken", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
+    const fetchCsrfToken = async () => {
+      try {
+        const response = await axios.get("https://profitpilot.ddns.net/subscriptions/csrfToken", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setCsrfToken(response.data.csrfToken);
-        alert(csrfToken);
-      })
-      .catch(() => {
-        setError("Something went wrong , Try refreshing.");
-      });
+      } catch {
+        setError("Failed to fetch CSRF token. Please refresh the page.");
+      }
+    };
+
+    fetchCsrfToken();
   }, [token]);
 
   useEffect(() => {
-    const { amount, account, bank, password } = formData;
-    setIsButtonDisabled(
-      error ||
-      !amount ||
-      !account ||
-      !bank ||
-      !password ||
-      amountError ||
-      passwordError ||
-      bankError
-    );
-  }, [formData, error, amountError, passwordError, bankError]);
-
-  useEffect(() => {
-    const { amount, email, password } = formData;
-    setIsButtonPaypalDisabled(error || !amount || !email || !password);
-  }, [formData, error]);
+    validateForm();
+  }, [formData, validateForm]);
 
   const handleChange = (e) => {
-    setPasswordError("");
-    setBankError("");
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
-    if (name === "amount" && (isNaN(value) || value <= 0)) {
-      setAmountError("Invalid withdrawal amount");
-    } else {
-      setAmountError("");
-    }
     setError("");
     setMessage("");
   };
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
+    if (isButtonDisabled) return;
+
     const { amount, account, bank, password } = formData;
 
-    if (!amount || isNaN(amount) || amount <= 0) {
-      setError("Invalid withdrawal amount");
-      return;
-    }
-    if (!password) {
-      setError("Enter password");
-      return;
-    }
     if (amount < 200) {
-      setAmountError("Minimum withdrawal is R200");
+      setFormErrors({ amount: "Minimum withdrawal is R200" });
       return;
     }
 
-    const requestBody = {
-      amount: parseFloat(amount),
-      account,
-      bank,
-      password,
-    };
+    const requestBody = { amount: parseFloat(amount), account, bank, password };
 
     setLoading(true);
-    axios
-      .post("https://profitpilot.ddns.net/subscriptions/withdraw", requestBody, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "X-CSRF-Token": csrfToken,
-          
-        },
-      })
-      .then((response) => {
-        setIsSuccessModalOpen(true);
-        setMessage(`Withdrawal successful. New balance: R ${response.data.newBalance}`);
-        setFormData({ amount: "", account: "", bank: "", password: "", email: formData.email });
-      })
-      .catch((error) => {
-        const responseError = error.response?.data;
-        if (responseError) {
-          if (responseError.errors) {
-            setError(responseError.errors.map(err => err.msg).join(", "));
-          }
-          if (responseError.PasswordError) {
-            setPasswordError(responseError.PasswordError);
-          }
-          if (responseError.NotAuthorisedError) {
-            setError(responseError.NotAuthorisedError);
-          }
-          if (responseError.UserError) {
-            setError(responseError.UserError);
-          }
-          if (responseError.MinimumError) {
-            setAmountError(responseError.MinimumError);
-          }
-          if (responseError.BalanceError) {
-            setError(responseError.BalanceError);
-          }
-        } else {
-          setError("Error processing withdrawal");
+    try {
+      const response = await axios.post(
+        "https://profitpilot.ddns.net/subscriptions/withdraw",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
+          },
         }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      );
+      setIsSuccessModalOpen(true);
+      setMessage(`Withdrawal successful. New balance: R ${response.data.newBalance}`);
+      setFormData((prevState) => ({
+        ...prevState,
+        amount: "",
+        account: "",
+        bank: "",
+        password: "",
+      }));
+    } catch (err) {
+      setError(err.response?.data?.error || "Withdrawal failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleWithdrawPaypal = () => {
+  const handleWithdrawPaypal = async () => {
+    if (isButtonDisabled) return;
+
     const { amount, email, password } = formData;
 
-    if (!amount || isNaN(amount) || amount <= 0) {
-      setError("Invalid withdrawal amount");
-      return;
-    }
-    if (!email) {
-      setError("Enter PayPal email");
-      return;
-    }
     if (amount < 50) {
-      setError("Minimum withdrawal is $50");
-      return;
-    }
-    if (!password) {
-      setError("Enter password");
+      setFormErrors({ amount: "Minimum withdrawal is $50" });
       return;
     }
 
-    const requestBody = {
-      amount: parseFloat(amount),
-      email,
-      password,
-    };
+    const requestBody = { amount: parseFloat(amount), email, password };
 
     setLoading(true);
-    axios
-      .post("https://play929-1e88617fc658.herokuapp.com/wallet/withdrawPaypal", requestBody, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "X-CSRF-Token": csrfToken,
-        },
-      })
-      .then((response) => {
-        setMessage(`Withdrawal successful , Check Your Email. New balance: R ${response.data.newBalance}`);
-        setFormData({ amount: "", account: "", bank: "", password: "", email: "" });
-      })
-      .catch((error) => {
-        const responseError = error.response?.data;
-        if (responseError) {
-          setError(responseError.error || "Error processing withdrawal");
-        } else {
-          setError("Error processing withdrawal");
+    try {
+      const response = await axios.post(
+        "https://play929-1e88617fc658.herokuapp.com/wallet/withdrawPaypal",
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "X-CSRF-Token": csrfToken,
+          },
         }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      );
+      setIsSuccessModalOpen(true);
+      setMessage(`Withdrawal successful. Check your email. New balance: $${response.data.newBalance}`);
+      setFormData((prevState) => ({ ...prevState, amount: "", email: "", password: "" }));
+    } catch (err) {
+      setError(err.response?.data?.error || "Error processing withdrawal");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -213,8 +165,9 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                       value={formData.amount}
                       onChange={handleChange}
                       inputMode="numeric"
+                      className={formErrors.amount ? "input-error" : ""}
                     />
-                    {amountError && <p className="error-message">{amountError}</p>}
+                    {formErrors.amount && <p className="error-message">{formErrors.amount}</p>}
                   </div>
                   <div>
                     <label>Account Number</label>
@@ -225,19 +178,22 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                       value={formData.account}
                       onChange={handleChange}
                       inputMode="numeric"
+                      className={formErrors.account ? "input-error" : ""}
                     />
+                    {formErrors.account && <p className="error-message">{formErrors.account}</p>}
                   </div>
                   <div>
                     <label>Password</label>
                     <br />
                     <input
-                      type="text"
+                      type="password"
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       inputMode="text"
+                      className={formErrors.password ? "input-error" : ""}
                     />
-                    {passwordError && <p className="error-message">{passwordError}</p>}
+                    {formErrors.password && <p className="error-message">{formErrors.password}</p>}
                   </div>
                   <div className="right">
                     <div className="dropdown_container">
@@ -248,6 +204,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                         name="bank"
                         value={formData.bank}
                         onChange={handleChange}
+                        
                       >
                         <option value="">Select a Bank</option>
                         <option value="Capitec">Capitec Bank</option>
@@ -255,6 +212,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                         <option value="Tymebank">TymeBank</option>
                         <option value="Absa">Absa</option>
                       </select>
+                      {formErrors.bank && <p className="error-message">{formErrors.bank}</p>}
                     </div>
                     <button
                       className="form_btn"
@@ -269,7 +227,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                 </>
               ) : (
                 <>
-                  <h4>Withdraw Funds - Paypal</h4>
+                  <h4>Withdraw Funds - PayPal</h4>
                   <div>
                     <label>Withdraw Amount</label>
                     <br />
@@ -279,47 +237,54 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                       value={formData.amount}
                       onChange={handleChange}
                       inputMode="numeric"
+                      className={formErrors.amount ? "input-error" : ""}
                     />
+                    {formErrors.amount && <p className="error-message">{formErrors.amount}</p>}
                   </div>
                   <div>
-                    <label>Paypal Email</label>
+                    <label>PayPal Email</label>
                     <br />
                     <input
-                      type="text"
+                      type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      inputMode="text"
+                      inputMode="email"
+                      className={formErrors.email ? "input-error" : ""}
                     />
+                    {formErrors.email && <p className="error-message">{formErrors.email}</p>}
                   </div>
                   <div>
                     <label>Password</label>
                     <br />
                     <input
-                      type="text"
+                      type="password"
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       inputMode="text"
+                      className={formErrors.password ? "input-error" : ""}
                     />
+                    {formErrors.password && <p className="error-message">{formErrors.password}</p>}
                   </div>
                   <button
                     className="form_btn"
                     onClick={handleWithdrawPaypal}
-                    disabled={loading || isButtonPaypalDisabled}
+                    disabled={loading || isButtonDisabled}
                   >
                     {loading ? "Processing..." : "Withdraw"}
                   </button>
-                  
+                  {message && <p className="success-message">{message}</p>}
                   {error && <p className="error-message">{error}</p>}
                 </>
               )}
             </div>
           </div>
+          {isSuccessModalOpen && (
+            <Success onClose={() => setIsSuccessModalOpen(false)} message={message} />
+          )}
         </div>
-        {isSuccessModalOpen && <Success errorMessage={message} isOpen={isSuccessModalOpen} onClose={() =>setIsSuccessModalOpen(false)}  />}
       </div>
-     
     </div>
   );
 }

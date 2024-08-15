@@ -3,30 +3,17 @@ import axios from "axios";
 import Auth from "../../Pages/Login/Auth";
 import Error from "../../Pages/ErrorModal/ErrorModal";
 import "./Navbar.scss";
-
+import { FaCircleInfo } from "react-icons/fa6";
+import InfoModal from "../../components/../Pages/InfoModal/InfoModal"; 
 
 const Navbar = ({ showSidebar }) => {
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [selectedGame, setSelectedGame] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const token = localStorage.getItem("token");
+  const [infoModalOpen, setInfoModalOpen] = useState(false);  
   
-
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -49,12 +36,13 @@ const Navbar = ({ showSidebar }) => {
         const balance = response.data;
         if (balance !== undefined) {
           setUserData(balance);
+          const code  = balance.acc;
+          localStorage.setItem("ReferralCode" ,code );
         }
       })
       .catch((error) => {
         setErrorMessage(`${error.message} ,  Check Your internet connection`);
         setErrorModalOpen(true);
-
       })
       .finally(() => {
         setLoading(false);
@@ -63,7 +51,7 @@ const Navbar = ({ showSidebar }) => {
 
   const getCurrencySymbol = () => {
     const country = userData.country;
-    const symbol = country === 'ZA' ? 'R' : '$';
+    const symbol = country === 'ZA' ? 'R' : 'R';
     localStorage.setItem("country", country);
     return symbol;
   };
@@ -71,17 +59,15 @@ const Navbar = ({ showSidebar }) => {
   return (
     <>
       <header>
-
         <li>
           <div className="balance">
-
             {loading ? "Loading..." : (
               userData.balance ? `${getCurrencySymbol()}${userData.balance}` :
                 <button className="form_btn" onClick={() => setLoginModalOpen(true)}>Login</button>
             )}
           </div>
         </li>
-        
+
         <li>
           <div className="acc">
             <h6>Acc no</h6>
@@ -89,11 +75,20 @@ const Navbar = ({ showSidebar }) => {
           </div>
         </li>
 
+       
+        <li>
+          <FaCircleInfo 
+            className="icon" 
+            onClick={() => setInfoModalOpen(true)} 
+            title="Regulations & Security Info" 
+          />
+        </li>
+       
       </header>
       
       {loginModalOpen && <Auth isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />}
       {errorModalOpen && <Error errorMessage={errorMessage} isOpen={errorModalOpen} onClose={() => setErrorModalOpen(false)} />}
-      
+      {infoModalOpen && <InfoModal isOpen={infoModalOpen} onClose={() => setInfoModalOpen(false)} />}
     </>
   );
 };

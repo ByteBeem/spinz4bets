@@ -57,14 +57,16 @@ const Login = ({ isOpen, onClose }) => {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    const countryOptions = Object.entries(countriesList)
+    const southAfricaOnly = Object.entries(countriesList)
+      .filter(([code, country]) => country.name === 'South Africa')
       .map(([code, country]) => ({
         code,
         name: country.name,
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-    setCountries(countryOptions);
+      }));
+  
+    setCountries(southAfricaOnly);
   }, []);
+  
 
 
   const validatePassword = (password, confirmPassword) => {

@@ -1,94 +1,85 @@
-.modal-content {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.514);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  
-    
-    @media (max-width: 576px) {
-      width: 90%;
-      margin: auto;
-      border-radius: 8px;
-    }
-  }
-  
-  .modal-header {
-    border-bottom: none;
-    padding: 1rem;
-  }
-  
-  .modal-title {
-    font-size: 1.25rem;
-  }
-  
-  .modal-body {
-    padding: 1rem;
-  }
-  
-  .modal-footer {
-    border-top: none;
-    padding: 1rem;
-  }
-  
-  .btn-primary {
-    width: 100%; 
+.refer-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+
+  .refer-content {
+    width: 100%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     text-align: center;
-    border-radius: 5px;
-    color: white;
-    transition: var(--transition);
-    cursor: pointer;
-  
-    @media (min-width: 576px) {
-      width: 80%; 
-      margin: auto; 
+
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #007bff;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .generate-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      margin-bottom: 2rem;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    .referral-link-section {
+      margin-top: 2rem;
+      text-align: left;
+
+      p {
+        font-size: 1rem;
+        color: #333;
+      }
+
+      .referral-input-group {
+        display: flex;
+        align-items: center;
+
+        .referral-input {
+          font-size: 1rem;
+          padding: 10px;
+          border-radius: 5px 0 0 5px;
+          border-right: none;
+        }
+
+        .copy-btn {
+          background-color: #007bff;
+          color: #fff;
+          border-radius: 0 5px 5px 0;
+          padding: 10px 20px;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
     }
   }
-  
-  .btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-  }
-  
-  .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-  }
-  
-  .btn-outline-secondary {
-    color: #6c757d;
-    border-color: #6c757d;
-  }
-  
-  .btn-outline-secondary:hover {
-    color: #495057;
-    border-color: #6c757d;
-  }
-  
-  .input-group {
-    margin-bottom: 1rem;
-  }
-  
-  .input-group-prepend {
-    button {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .refer-page {
+    padding: 1rem;
+
+    .refer-content {
+      padding: 1.5rem;
     }
   }
-  
-  .form-control {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  
-  @media (max-width: 576px) {
-    .modal-content {
-      border-radius: 8px; 
-    }
-  }
-  
+}

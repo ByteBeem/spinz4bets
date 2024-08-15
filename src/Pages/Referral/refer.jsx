@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { Modal, Button, InputGroup, FormControl } from 'react-bootstrap';
-import './refer.scss'; 
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
+import Navbar from "../../components/Navbar/Navbar";
+import './refer.scss';
 
-function Refer() {
-  const [showModal, setShowModal] = useState(false);
+function Refer({ showSidebar}) {
   const [referralLink, setReferralLink] = useState('');
-  const referralCode = localStorage.getItem('ReferralCode'); 
-
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const referralCode = localStorage.getItem('ReferralCode');
 
   const generateReferralLink = () => {
-    const link = `https://Play929.com/?r=${referralCode}`;
+    const link = `spinz4bets.co.za/?r=${referralCode}`;
     setReferralLink(link);
-    handleShow();
   };
 
   const copyToClipboard = () => {
@@ -23,33 +19,38 @@ function Refer() {
   };
 
   return (
-    <>
-      <Button variant="primary" onClick={generateReferralLink}>
-        Referral
-      </Button>
+    <div className="refer-page">
+      
+      <Navbar showSidebar={showSidebar} />
 
-      <Modal show={showModal} onHide={handleClose}>
+      <div className="refer-content">
+        <h2>Invite Friends & Earn</h2>
+        <p>
+          Share your unique referral link with friends. When they join and deposit any amount,
+          you'll receive the same amount they deposited!
+        </p>
         
-        <Modal.Body>
-            
-          <p>{`https://Play929.com/?r=${referralCode}`}</p>
-          <InputGroup className="mb-3">
-            <FormControl
-              readOnly
-              value={`https://Play929.com/?r=${referralCode}`}
-            />
-            <Button variant="outline-secondary" onClick={copyToClipboard}>
-              Copy
-            </Button>
-            <Button variant="outline-secondary" onClick={handleClose}>
-            Close
-          </Button>
-          </InputGroup>
-          
-        </Modal.Body>
+        <Button variant="primary" onClick={generateReferralLink} className="generate-btn">
+          Generate Referral Link
+        </Button>
         
-      </Modal>
-    </>
+        {referralLink && (
+          <div className="referral-link-section">
+            <p>Your Referral Link:</p>
+            <InputGroup className="mb-3 referral-input-group">
+              <FormControl
+                readOnly
+                value={referralLink}
+                className="referral-input"
+              />
+              <Button variant="outline-secondary" onClick={copyToClipboard} className="copy-btn">
+                Copy
+              </Button>
+            </InputGroup>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 

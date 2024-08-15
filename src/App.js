@@ -7,6 +7,7 @@ import Profile from "./Pages/Profile/Profile";
 import Reset from "./Pages/Reset/Reset";
 import Deposit from "./Pages/Deposit/Deposit";
 import Wallet from "./Pages/wallet/Wallet";
+import Refer from "./Pages/Referral/refer";
 import NotFound from "./Pages/NotFound/PageNotFound";
 import Withdraw from "./Pages/Withdrawal/Withdrawal";
 import { Analytics } from '@vercel/analytics/react';
@@ -47,6 +48,17 @@ function App() {
                             path="reset"
                             element={
                                 <Reset
+                                    showSidebar={showSidebar}
+                                    closeSidebar={closeSidebar}
+                                    active={active}
+                                />
+                            }
+                        />
+
+                        <Route
+                            path="Refer"
+                            element={
+                                <Refer
                                     showSidebar={showSidebar}
                                     closeSidebar={closeSidebar}
                                     active={active}
