@@ -11,7 +11,7 @@ header {
   padding: 0 10% 0 0;
 
   .menu_btn {
-    display: none; 
+    display: none; /* Hidden by default */
   }
 
   .icon {
@@ -20,13 +20,13 @@ header {
 
     @media screen and (max-width: 900px) {
       font-size: 1.5rem;
-      margin-right: 4rem; 
+      margin-right: 4rem; /* Adjust for smaller screens */
     }
 
     @media screen and (max-width: 700px) {
       font-size: 1.5rem;
-      margin-right: 2rem; 
-      padding: 0; 
+      margin-right: 2rem; /* Further adjust for very small screens */
+      padding: 0; /* Reset padding if necessary */
     }
   }
 
@@ -52,12 +52,12 @@ header {
 
     @media screen and (max-width: 700px) {
       font-size: 18px;
-      margin-left: 1rem;
+      margin-left: 1rem; /* Adjust margin for smaller screens */
     }
 
     @media screen and (max-width: 900px) {
       font-size: 18px;
-      margin-left: 2rem; 
+      margin-left: 2rem; /* Adjust for medium screens */
     }
   }
 
@@ -69,12 +69,12 @@ header {
 
     @media screen and (max-width: 700px) {
       font-size: 18px;
-      margin-right: 2rem; 
+      margin-right: 2rem; /* Adjust margin for smaller screens */
     }
 
     @media screen and (max-width: 900px) {
       font-size: 18px;
-      margin-right: 4rem;
+      margin-right: 4rem; /* Adjust for medium screens */
     }
   }
 
@@ -87,6 +87,7 @@ header {
   .games_filter {
     display: flex;
     align-items: center;
+    margin-left: 5rem; /* Adjust as needed */
 
     .deposits-button {
       padding: 10px;
@@ -104,7 +105,7 @@ header {
     }
 
     li {
-      margin-right: 2rem;
+      margin-right: 1.5rem; /* Add spacing between items */
       font-weight: 100;
       position: relative;
       cursor: pointer;
@@ -118,7 +119,7 @@ header {
         bottom: -7px;
         left: 50%;
         transform: translateX(-50%);
-        opacity: 0;
+        opacity: 0; /* Ensure no dots are visible */
       }
 
       &:hover {
@@ -144,7 +145,7 @@ header {
     }
 
     .games_filter {
-      margin-left: 1rem; 
+      margin-left: 1rem; /* Adjust for smaller screens */
 
       li {
         margin-right: 1rem;
@@ -154,7 +155,7 @@ header {
 
   @media screen and (max-width: 900px) {
     .games_filter {
-      margin-left: 2rem; 
+      margin-left: 2rem; /* Adjust for medium screens */
     }
   }
 
