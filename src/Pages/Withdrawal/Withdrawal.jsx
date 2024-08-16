@@ -211,6 +211,8 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                         <option value="Standardbank">Standard Bank</option>
                         <option value="Tymebank">TymeBank</option>
                         <option value="Absa">Absa</option>
+                        <option value="FNB">FNB</option>
+                       
                       </select>
                       {formErrors.bank && <p className="error-message">{formErrors.bank}</p>}
                     </div>

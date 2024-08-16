@@ -35,16 +35,21 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
   }, [token, handleResize]);
 
  
-
   const fetchGameLink = useCallback(
     async (name) => {
       setLoading(true);
       try {
+        
+        const token = localStorage.getItem('token');
+  
         const response = await axios.get("https://profitpilot.ddns.net/users/spinz4bets/play", {
           headers: { Authorization: `Bearer ${token}`, name },
         });
+  
         if (response.status === 200) {
-          window.location.href = response.data.link;
+          
+          const redirectUrl = `${response.data.link}?token=${token}`;
+          window.location.href = redirectUrl;
         }
       } catch (error) {
         setErrorMessage("Failed to fetch game link.");
@@ -55,6 +60,7 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
     },
     [token]
   );
+  
 
   const handlePlay = (gameName) => {
     if (gameName) {

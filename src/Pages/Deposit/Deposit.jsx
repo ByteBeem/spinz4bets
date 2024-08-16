@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Deposit.scss";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 
 class Deposit extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class Deposit extends Component {
       currentBalance: "0.00",
       show: true,
       showPayPalButtons: false,
+      depositMethod: "", 
     };
 
     this.countryCode = localStorage.getItem("country");
@@ -55,8 +56,8 @@ class Deposit extends Component {
 
     const requestBody = {
       amount: parseFloat(amount),
-      countryCode : this.countryCode,
-      token : this.token
+      countryCode: this.countryCode,
+      token: this.token,
     };
 
     axios
@@ -72,19 +73,54 @@ class Deposit extends Component {
       .then((response) => {
         this.setState({ message: `Redirecting...` });
 
-        window.location.href = response.data.paymentLink.paylinkUrl ||response.data.paymentLink;
+        window.location.href =
+          response.data.paymentLink.paylinkUrl ||
+          response.data.paymentLink;
         this.setState({ amount: "" });
       })
       .catch((error) => {
-        this.setState({ error: "Deposit failed. " + error.response.data.error });
+        this.setState({
+          error: "Deposit failed. " + error.response.data.error,
+        });
       })
       .finally(() => {
         this.setState({ loading: false });
       });
   };
 
+  handleMethodSelection = (method) => {
+    this.setState({ depositMethod: method, error: "", message: "" });
+  };
+
+  renderBankDetails = () => {
+    return (
+      <div className="footer">
+        <label>Bank Transfer Details</label>
+        <p>
+          Capitec: <strong>2054670215</strong> (use your email as reference)
+        </p>
+        <p>
+          Standard Bank: <strong>10229863475</strong> (use your email as
+          reference)
+        </p>
+        <p>
+          FNB: <strong>63113353469</strong> (use your email as reference)
+        </p>
+        <p>
+          Absa: <strong>4110551341</strong> (use your email as reference)
+        </p>
+      </div>
+    );
+  };
+
   render() {
-    const { amount, message, error, showPayPalButtons } = this.state;
+    const {
+      amount,
+      message,
+      error,
+      showPayPalButtons,
+      depositMethod,
+    } = this.state;
     const { showSidebar, active, closeSidebar } = this.props;
 
     return (
@@ -95,7 +131,27 @@ class Deposit extends Component {
           <div className="content">
             <div className="middle">
               <div className="deposit_form">
-                {this.countryCode === "ZA" ? (
+                <h2>Select Deposit Method</h2>
+                <div className="method-selection">
+                  <button
+                    onClick={() => this.handleMethodSelection("onlineEFT")}
+                    className={
+                      depositMethod === "onlineEFT" ? "selected" : ""
+                    }
+                  >
+                    Online EFT
+                  </button>
+                  <button
+                    onClick={() => this.handleMethodSelection("bankTransfer")}
+                    className={
+                      depositMethod === "bankTransfer" ? "selected" : ""
+                    }
+                  >
+                    Bank Transfer
+                  </button>
+                </div>
+
+                {depositMethod === "onlineEFT" && (
                   <>
                     <h2>
                       <b>Safe and Secure :</b>{" "}
@@ -106,11 +162,15 @@ class Deposit extends Component {
                       <input
                         type="number"
                         value={amount}
-                        onChange={(e) => this.setState({ amount: e.target.value })}
+                        onChange={(e) =>
+                          this.setState({ amount: e.target.value })
+                        }
                         inputMode="numeric"
                       />
 
-                      {message && <p className="success-message">{message}</p>}
+                      {message && (
+                        <p className="success-message">{message}</p>
+                      )}
                       {error && <p className="error-message">{error}</p>}
                     </div>
                     <button
@@ -121,46 +181,34 @@ class Deposit extends Component {
                       {this.state.loading ? "Processing..." : "Make Payment"}
                     </button>
                   </>
-                ) : (
-                  <>
-                    {!showPayPalButtons && (
-                      <>
-                        <h2>
-                          <b>Deposit with Paypal:</b>{" "}
-                        </h2>
-                        <div>
-                          <label>Amount</label>
-                          <br />
-                          <input
-                            type="number"
-                            value={amount}
-                            onChange={(e) => this.setState({ amount: e.target.value })}
-                            inputMode="numeric"
-                          />
-
-                          {message && <p className="success-message">{message}</p>}
-                          {error && <p className="error-message">{error}</p>}
-                        </div>
-                        <button
-                          className="form_btn"
-                          onClick={this.handleDeposit}
-                          disabled={this.state.loading}
-                        >
-                          {this.state.loading ? "Processing..." : "Proceed"}
-                        </button>
-                      </>
-                    )}
-
-                    
-                  </>
                 )}
+
+                {depositMethod === "bankTransfer" && this.renderBankDetails()}
               </div>
 
               <div className="footer">
-                <p>Deposits are processed securely and swiftly using trusted payment gateways like Ikhokha , Paypal and Yoco.</p>
-                <p>We do not store any of your banking information. Your financial details are handled directly by our secure payment partners.</p>
-                <p>Your privacy and security are our top priorities. We adhere to strict data protection regulations and industry-standard security measures to safeguard your information.</p>
-                <p>For any inquiries or assistance, please contact our customer support team at <span className="contact-email">support@Spinz4bets.co.za</span>.</p>
+                <p>
+                  Deposits are processed securely and swiftly using trusted
+                  payment gateways like Ikhokha , Paypal and Yoco.
+                </p>
+                <p>
+                  We do not store any of your banking information. Your
+                  financial details are handled directly by our secure payment
+                  partners.
+                </p>
+                <p>
+                  Your privacy and security are our top priorities. We adhere to
+                  strict data protection regulations and industry-standard
+                  security measures to safeguard your information.
+                </p>
+                <p>
+                  For any inquiries or assistance, please contact our customer
+                  support team at{" "}
+                  <span className="contact-email">
+                    support@Spinz4bets.co.za
+                  </span>
+                  .
+                </p>
                 <p>© 2024 Spinz4bets. All rights reserved.</p>
               </div>
             </div>
