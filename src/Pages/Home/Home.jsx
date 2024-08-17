@@ -13,7 +13,7 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [prevGames] = useState([
     { name: "Cup Guess", image: cup, minimum: "2" },
-    { name: "Slot Machine", image: slot, minimum: "2" },
+    { name: "Slot Machine", image: slot, minimum: "1" },
   ]);
   const [loading, setLoading] = useState(false);
  

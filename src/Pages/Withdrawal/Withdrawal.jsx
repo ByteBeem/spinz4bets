@@ -13,7 +13,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
     email: "",
     password: "",
   });
-  const [csrfToken, setCsrfToken] = useState("");
+  
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -45,20 +45,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
     setIsButtonDisabled(Object.keys(errors).length > 0);
   }, [formData, countryCode]);
 
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const response = await axios.get("https://profitpilot.ddns.net/subscriptions/csrfToken", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCsrfToken(response.data.csrfToken);
-      } catch {
-        setError("Failed to fetch CSRF token. Please refresh the page.");
-      }
-    };
-
-    fetchCsrfToken();
-  }, [token]);
+  
 
   useEffect(() => {
     validateForm();
@@ -91,7 +78,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "X-CSRF-Token": csrfToken,
+           
           },
         }
       );
@@ -131,7 +118,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "X-CSRF-Token": csrfToken,
+            
           },
         }
       );
@@ -156,6 +143,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
               {countryCode === "ZA" ? (
                 <>
                   <h3>Withdraw Funds</h3>
+                  {error && <p className="error-message">{error}</p>}
                   <div>
                     <label>Withdraw Amount</label>
                     <br />
@@ -225,7 +213,7 @@ function Withdraw({ showSidebar, active, closeSidebar }) {
                     </button>
                   </div>
                   {message && <p className="success-message">{message}</p>}
-                  {error && <p className="error-message">{error}</p>}
+                 
                 </>
               ) : (
                 <>
