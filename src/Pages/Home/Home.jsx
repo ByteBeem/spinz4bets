@@ -22,7 +22,7 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
 
   const statuses = [
     { name: 'Spin', label: "", image: spin },
-    {name: 'Word',  label: "", image: word },
+    { name: 'Word', label: "", image: word },
     { name: 'Wheel', label: "", image: wheel },
     { name: 'Dice', label: "", image: dice }
   ];
@@ -86,42 +86,53 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
         <Navbar showSidebar={showSidebar} />
 
         <div className="content">
-            <div className="status-circles">
-              {statuses.map((game, index) => (
+          <div className="status-circles">
+            {token ? (
+              statuses.map((game, index) => (
                 <div key={index} className="status-circle">
-                  <img src={game.image} alt={game.label} className="status-image"  onClick={() => handlePlay(game.name)}/>
+                  <img
+                    src={game.image}
+                    alt={game.label}
+                    className="status-image"
+                    onClick={() => handlePlay(game.name)}
+                  />
                   <div className="status-label">{game.label}</div>
                 </div>
-              ))}
-            </div>
-          
+              ))
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
 
-          <div className="games_slider">
-            <div className="scrollview" style={{ maxHeight: maxContainerHeight }}>
-              <div className="card_container">
-                {token ? (
-                  prevGames.map((game, index) => (
-                    <div key={index} className="card">
-                      <img src={game.image} alt={`${game.name} image`} />
-                      <div className="tournament_info">
-                        <h3>{game.name}</h3>
-                        <p>Minimum: {getCurrencySymbol()}{game.minimum}</p>
-                        <button className="play-button" onClick={() => handlePlay(game.name)}>Play</button>
-                      </div>
+
+
+        <div className="games_slider">
+          <div className="scrollview" style={{ maxHeight: maxContainerHeight }}>
+            <div className="card_container">
+              {token ? (
+                prevGames.map((game, index) => (
+                  <div key={index} className="card">
+                    <img src={game.image} alt={`${game.name} image`} />
+                    <div className="tournament_info">
+                      <h3>{game.name}</h3>
+                      <p>Minimum: {getCurrencySymbol()}{game.minimum}</p>
+                      <button className="play-button" onClick={() => handlePlay(game.name)}>Play</button>
                     </div>
-                  ))
-                ) : (
-                  <div className="no-games-message">
-                    <p>No games found, Please Login.</p>
                   </div>
-                )}
-              </div>
+                ))
+              ) : (
+                <div className="no-games-message">
+                  <p>No games found, Please Login.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {errorModalOpen && <Error errorMessage={errorMessage} isOpen={errorModalOpen} onClose={() => setErrorModalOpen(false)} />}
     </div>
+      { errorModalOpen && <Error errorMessage={errorMessage} isOpen={errorModalOpen} onClose={() => setErrorModalOpen(false)} /> }
+    </div >
   );
 };
 
