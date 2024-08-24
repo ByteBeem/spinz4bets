@@ -9,6 +9,7 @@ import slot from "../../assets/slot.jpg";
 import spin from "../../assets/spin.png";
 import word from "../../assets/word.jpg";
 import wheel from "../../assets/wheel.png";
+import dice from "../../assets/dice.png";
 import { FiLoader } from "react-icons/fi";
 
 const Home = ({ showSidebar, active, closeSidebar }) => {
@@ -22,7 +23,8 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
   const statuses = [
     { name: 'Spin', label: "", image: spin },
     {name: 'Word',  label: "", image: word },
-    { name: 'Wheel', label: "", image: wheel }
+    { name: 'Wheel', label: "", image: wheel },
+    { name: 'Dice', label: "", image: dice }
   ];
   const [loading, setLoading] = useState(false);
   const [maxContainerHeight, setMaxContainerHeight] = useState(window.innerHeight - 100);
