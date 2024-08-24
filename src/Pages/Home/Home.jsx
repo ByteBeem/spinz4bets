@@ -103,7 +103,6 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
               ''
             )}
           </div>
-        </div>
 
 
 
