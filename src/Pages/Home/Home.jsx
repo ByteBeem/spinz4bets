@@ -6,6 +6,9 @@ import Error from "../ErrorModal/ErrorModal";
 import "./Home.scss";
 import cup from "../../assets/cup.jpg";
 import slot from "../../assets/slot.jpg";
+import spin from "../../assets/spin.png";
+import word from "../../assets/word.jpg";
+import wheel from "../../assets/wheel.png";
 import { FiLoader } from "react-icons/fi";
 
 const Home = ({ showSidebar, active, closeSidebar }) => {
@@ -15,8 +18,13 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
     { name: "Cup Guess", image: cup, minimum: "2" },
     { name: "Slot Machine", image: slot, minimum: "1" },
   ]);
+
+  const statuses = [
+    { name: 'Spin', label: "", image: spin },
+    {name: 'Word',  label: "", image: word },
+    { name: 'Wheel', label: "", image: wheel }
+  ];
   const [loading, setLoading] = useState(false);
- 
   const [maxContainerHeight, setMaxContainerHeight] = useState(window.innerHeight - 100);
   const token = localStorage.getItem("token");
   const country = localStorage.getItem("country");
@@ -28,26 +36,21 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
   useEffect(() => {
     window.addEventListener("resize", handleResize);
 
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [token, handleResize]);
 
- 
   const fetchGameLink = useCallback(
     async (name) => {
       setLoading(true);
       try {
-        
         const token = localStorage.getItem('token');
-  
         const response = await axios.get("https://profitpilot.ddns.net/users/spinz4bets/play", {
           headers: { Authorization: `Bearer ${token}`, name },
         });
-  
+
         if (response.status === 200) {
-          
           const redirectUrl = `${response.data.link}?token=${token}`;
           window.location.href = redirectUrl;
         }
@@ -60,7 +63,6 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
     },
     [token]
   );
-  
 
   const handlePlay = (gameName) => {
     if (gameName) {
@@ -80,7 +82,18 @@ const Home = ({ showSidebar, active, closeSidebar }) => {
       <Sidebar active={active} closeSidebar={closeSidebar} />
       <div className="home_container">
         <Navbar showSidebar={showSidebar} />
+
         <div className="content">
+            <div className="status-circles">
+              {statuses.map((game, index) => (
+                <div key={index} className="status-circle">
+                  <img src={game.image} alt={game.label} className="status-image"  onClick={() => handlePlay(game.name)}/>
+                  <div className="status-label">{game.label}</div>
+                </div>
+              ))}
+            </div>
+          
+
           <div className="games_slider">
             <div className="scrollview" style={{ maxHeight: maxContainerHeight }}>
               <div className="card_container">
